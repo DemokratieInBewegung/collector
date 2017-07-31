@@ -2,9 +2,14 @@
   <div>
     <form-wizard @on-complete="onComplete"
                  color="gray"
+                 title="Kontakt Informationen eintragen"
+                 subtitle="für DEMOKRATIE IN BEWEGUNG"
+                 nextButtonText="Weiter"
+                 backButtonText="Zurück"
+                 finalButtonText="Abschicken"
                  error-color="#a94442"
                  >
-        <tab-content title="Personal details"
+        <tab-content title="Name"
                      icon="ti-user" :before-change="validateFirstTab">
            <vue-form-generator :model="model" 
                                :schema="firstTabSchema"
@@ -14,8 +19,8 @@
                                  
            </vue-form-generator>
         </tab-content>
-        <tab-content title="Additional Info"
-                     icon="ti-settings" :before-change="validateSecondTab">
+        <tab-content title="Kontakt Info"
+                     icon="ti-id-badge" :before-change="submitModel">
          <vue-form-generator :model="model" 
                                :schema="secondTabSchema"
                                :options="formOptions"
@@ -24,8 +29,8 @@
            </vue-form-generator>
            
         </tab-content>
-        <tab-content title="Last step"
-                     icon="ti-check">
+        <tab-content title="Danke"
+                     icon="ti-heart">
           <h4>Your json is ready!</h4>
           <div class="panel-body">
             <pre v-if="model" v-html="prettyJSON(model)"></pre>
@@ -49,10 +54,9 @@ export default {
         firstName: '',
         lastName: '',
         email: '',
-        streetName: '',
-        streetNumber: '',
-        city: '',
-        country: ''
+        newsletter: true,
+        postal_code: '',
+        phone_number: ''
       },
       formOptions: {
         validationErrorClass: 'has-error',
@@ -63,29 +67,32 @@ export default {
         fields: [{
           type: 'input',
           inputType: 'text',
-          label: 'First name',
+          autocomplete: false,
+          placeholder: 'Vorname',
           model: 'firstName',
           required: true,
           validator: VueFormGenerator.validators.string,
-          styleClasses: 'col-xs-6'
+          styleClasses: 'col-md-6 offset-md-3'
         },
         {
           type: 'input',
           inputType: 'text',
-          label: 'Last name',
+          autocomplete: false,
+          placeholder: 'Nachname',
           model: 'lastName',
           required: true,
           validator: VueFormGenerator.validators.string,
-          styleClasses: 'col-xs-6'
+          styleClasses: 'col-md-6 offset-md-3'
         },
         {
           type: 'input',
           inputType: 'text',
-          label: 'Email',
-          model: 'email',
+          autocomplete: false,
+          placeholder: 'Postleitzahl',
+          model: 'postal_code',
           required: true,
-          validator: VueFormGenerator.validators.email,
-          styleClasses: 'col-xs-12'
+          validator: VueFormGenerator.validators.string,
+          styleClasses: 'col-md-6 offset-md-3'
         }
         ]
       },
@@ -94,38 +101,29 @@ export default {
           {
             type: 'input',
             inputType: 'text',
-            label: 'Street name',
-            model: 'streetName',
-            required: true,
-            validator: VueFormGenerator.validators.string,
-            styleClasses: 'col-xs-9'
+            autocomplete: false,
+            placeholder: 'Email',
+            model: 'email',
+            required: false,
+            validator: VueFormGenerator.validators.email,
+            styleClasses: 'col-md-6 offset-md-3 '
+          },
+          {
+            type: 'checkbox',
+            label: 'Bitte haltet mich über DiB auf dem Laufenden',
+            model: 'newsletter',
+            default: true,
+            styleClasses: 'col-md-6 offset-md-3 form-inline'
           },
           {
             type: 'input',
             inputType: 'text',
-            label: 'Street number',
-            model: 'streetNumber',
-            required: true,
+            autocomplete: false,
+            placeholder: 'Handy Nummer',
+            model: 'phone_number',
+            required: false,
             validator: VueFormGenerator.validators.string,
-            styleClasses: 'col-xs-3'
-          },
-          {
-            type: 'input',
-            inputType: 'text',
-            label: 'City',
-            model: 'city',
-            required: true,
-            validator: VueFormGenerator.validators.string,
-            styleClasses: 'col-xs-6'
-          },
-          {
-            type: 'select',
-            label: 'Country',
-            model: 'country',
-            required: true,
-            validator: VueFormGenerator.validators.string,
-            values: ['United Kingdom', 'Romania', 'Germany'],
-            styleClasses: 'col-xs-6'
+            styleClasses: 'col-md-6 offset-md-3'
           }
         ]
       }
@@ -141,7 +139,12 @@ export default {
     validateSecondTab: function () {
       return this.$refs.secondTabForm.validate()
     },
-
+    submitModel: function () {
+      console.log(this)
+      let validated = this.validateSecondTab()
+      if (!validated) return validated
+      console.log(this.model)
+    },
     prettyJSON: function (json) {
       if (json) {
         json = JSON.stringify(json, undefined, 4)
