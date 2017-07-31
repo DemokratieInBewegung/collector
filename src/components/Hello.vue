@@ -1,31 +1,167 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank">Forum</a></li>
-      <li><a href="https://gitter.im/vuejs/vue" target="_blank">Gitter Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank">Twitter</a></li>
-      <br>
-      <li><a href="http://vuejs-templates.github.io/webpack/" target="_blank">Docs for This Template</a></li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li><a href="http://router.vuejs.org/" target="_blank">vue-router</a></li>
-      <li><a href="http://vuex.vuejs.org/" target="_blank">vuex</a></li>
-      <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
-    </ul>
+  <div>
+    <form-wizard @on-complete="onComplete"
+                 color="gray"
+                 error-color="#a94442"
+                 >
+        <tab-content title="Personal details"
+                     icon="ti-user" :before-change="validateFirstTab">
+           <vue-form-generator :model="model" 
+                               :schema="firstTabSchema"
+                               :options="formOptions"
+                               ref="firstTabForm"
+                               >
+                                 
+           </vue-form-generator>
+        </tab-content>
+        <tab-content title="Additional Info"
+                     icon="ti-settings" :before-change="validateSecondTab">
+         <vue-form-generator :model="model" 
+                               :schema="secondTabSchema"
+                               :options="formOptions"
+                               ref="secondTabForm"
+                               >                                
+           </vue-form-generator>
+           
+        </tab-content>
+        <tab-content title="Last step"
+                     icon="ti-check">
+          <h4>Your json is ready!</h4>
+          <div class="panel-body">
+            <pre v-if="model" v-html="prettyJSON(model)"></pre>
+          </div>
+        </tab-content>
+    </form-wizard>
   </div>
 </template>
 
 <script>
+import VueFormGenerator from 'vue-form-generator'
+// import VueFormWizard from 'vue-form-wizard'
+
+import 'vue-form-wizard/dist/vue-form-wizard.min.css'
+
 export default {
-  name: 'hello',
+  name: 'wizard',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      model: {
+        firstName: '',
+        lastName: '',
+        email: '',
+        streetName: '',
+        streetNumber: '',
+        city: '',
+        country: ''
+      },
+      formOptions: {
+        validationErrorClass: 'has-error',
+        validationSuccessClass: 'has-success',
+        validateAfterChanged: true
+      },
+      firstTabSchema: {
+        fields: [{
+          type: 'input',
+          inputType: 'text',
+          label: 'First name',
+          model: 'firstName',
+          required: true,
+          validator: VueFormGenerator.validators.string,
+          styleClasses: 'col-xs-6'
+        },
+        {
+          type: 'input',
+          inputType: 'text',
+          label: 'Last name',
+          model: 'lastName',
+          required: true,
+          validator: VueFormGenerator.validators.string,
+          styleClasses: 'col-xs-6'
+        },
+        {
+          type: 'input',
+          inputType: 'text',
+          label: 'Email',
+          model: 'email',
+          required: true,
+          validator: VueFormGenerator.validators.email,
+          styleClasses: 'col-xs-12'
+        }
+        ]
+      },
+      secondTabSchema: {
+        fields: [
+          {
+            type: 'input',
+            inputType: 'text',
+            label: 'Street name',
+            model: 'streetName',
+            required: true,
+            validator: VueFormGenerator.validators.string,
+            styleClasses: 'col-xs-9'
+          },
+          {
+            type: 'input',
+            inputType: 'text',
+            label: 'Street number',
+            model: 'streetNumber',
+            required: true,
+            validator: VueFormGenerator.validators.string,
+            styleClasses: 'col-xs-3'
+          },
+          {
+            type: 'input',
+            inputType: 'text',
+            label: 'City',
+            model: 'city',
+            required: true,
+            validator: VueFormGenerator.validators.string,
+            styleClasses: 'col-xs-6'
+          },
+          {
+            type: 'select',
+            label: 'Country',
+            model: 'country',
+            required: true,
+            validator: VueFormGenerator.validators.string,
+            values: ['United Kingdom', 'Romania', 'Germany'],
+            styleClasses: 'col-xs-6'
+          }
+        ]
+      }
+    }
+  },
+  methods: {
+    onComplete: function () {
+      alert('Yay. Done!')
+    },
+    validateFirstTab: function () {
+      return this.$refs.firstTabForm.validate()
+    },
+    validateSecondTab: function () {
+      return this.$refs.secondTabForm.validate()
+    },
+
+    prettyJSON: function (json) {
+      if (json) {
+        json = JSON.stringify(json, undefined, 4)
+        json = json.replace(/&/g, '&').replace(/</g, '<').replace(/>/g, '>')
+        return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\\-]?\d+)?)/g, function (match) {
+          var cls = 'number'
+          if (/^"/.test(match)) {
+            if (/:$/.test(match)) {
+              cls = 'key'
+            } else {
+              cls = 'string'
+            }
+          } else if (/true|false/.test(match)) {
+            cls = 'boolean'
+          } else if (/null/.test(match)) {
+            cls = 'null'
+          }
+          return '<span class="' + cls + '">' + match + '</span>'
+        })
+      }
     }
   }
 }

@@ -11,10 +11,14 @@
     "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit && npm run e2e",
-    "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs"
+    "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs",
+    "fix-lint": "eslint --fix --ext .js,.vue src test/unit/specs test/e2e/specs"
   },
   "dependencies": {
+    "themify-icons": "^1.0.0",
     "vue": "^2.3.3",
+    "vue-form-wizard": "^0.6.1",
+    "vue-pouchdb": "^1.0.0",
     "vue-router": "^2.6.0"
   },
   "devDependencies": {
