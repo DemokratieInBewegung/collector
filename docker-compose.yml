@@ -4,7 +4,7 @@ services:
     image: couchdb
     environment:
       - VIRTUAL_HOST=cllctrdb.bewegung.jetzt
-      - LETSENCRYPT_HOST_DOMAIN=cllctrdb.bewegung.jetzt
+      - LETSENCRYPT_HOST=cllctrdb.bewegung.jetzt
       - LETSENCRYPT_EMAIL=tech@bewegung.jetzt
     env_file: secrects.env
     volumes:
