@@ -57,7 +57,7 @@ const db = new PouchDB('collector')
 
 const password = prompt('DB Password?')
 
-db.replicate.to('https://cllctr:' + password + '@cllctr-db.bewegung.jetzt/cllctr', {
+db.replicate.to('https://cllctr:' + password + '@cllctrdb.bewegung.jetzt/cllctr', {
   live: true,
   retry: true
 })

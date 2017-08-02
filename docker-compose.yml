@@ -3,8 +3,8 @@ services:
   db:
     image: couchdb
     environment:
-      - VIRTUAL_HOST=cllctr-db.bewegung.jetzt
-      - LETSENCRYPT_DOMAIN=cllctr-db.bewegung.jetzt
+      - VIRTUAL_HOST=cllctrdb.bewegung.jetzt
+      - LETSENCRYPT_HOST_DOMAIN=cllctrdb.bewegung.jetzt
       - LETSENCRYPT_EMAIL=tech@bewegung.jetzt
     env_file: secrects.env
     volumes:
@@ -16,7 +16,7 @@ services:
     image: nginx:alpine
     environment:
       - VIRTUAL_HOST=swk.bewegung.jetzt
-      - LETSENCRYPT_DOMAIN=swk.bewegung.jetzt
+      - LETSENCRYPT_HOST=swk.bewegung.jetzt
       - LETSENCRYPT_EMAIL=tech@bewegung.jetzt
       - NGINX_HOST=swk.bewegung.jetzt
       - NGINX_PORT=80
