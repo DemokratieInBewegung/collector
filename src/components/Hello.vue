@@ -55,10 +55,9 @@ import 'vue-form-wizard/dist/vue-form-wizard.min.css'
 
 const db = new PouchDB('collector')
 
-window.db = db
-window.uuid = uuid
+const password = prompt('DB Password?')
 
-db.replicate.to('http://example.com/mydb', {
+db.replicate.to('https://cllctr:' + password + '@cllctr-db.bewegung.jetzt/cllctr', {
   live: true,
   retry: true
 })

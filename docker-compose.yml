@@ -3,12 +3,14 @@ services:
   db:
     image: couchdb
     environment:
-      - VIRTUAL_HOST=clltrdb.bewegung.jetzt
-      - LETSENCRYPT_DOMAIN=clltrdb.bewegung.jetzt
+      - VIRTUAL_HOST=cllctr-db.bewegung.jetzt
+      - LETSENCRYPT_DOMAIN=cllctr-db.bewegung.jetzt
       - LETSENCRYPT_EMAIL=tech@bewegung.jetzt
     env_file: secrects.env
     volumes:
        - ./data/db:/usr/local/var/lib/couchdb
+    expose:
+      - 5984
     restart: unless-stopped
   web:
     image: nginx:alpine
