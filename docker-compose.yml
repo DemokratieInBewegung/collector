@@ -1,13 +1,13 @@
- version: '2'
- services:
-   db:
-     image: couchdb
-     environment:
+version: '2'
+services:
+  db:
+    image: couchdb
+    environment:
       - VIRTUAL_HOST=clltrdb.bewegung.jetzt
       - LETSENCRYPT_DOMAIN=clltrdb.bewegung.jetzt
       - LETSENCRYPT_EMAIL=tech@bewegung.jetzt
-     env_file: secrects.env
-     volumes:
+    env_file: secrects.env
+    volumes:
        - ./data/db:/usr/local/var/lib/couchdb
     restart: unless-stopped
   web:
