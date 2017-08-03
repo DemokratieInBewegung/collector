@@ -54,10 +54,21 @@ import uuid from 'uuid'
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
 
 const db = new PouchDB('collector')
+const remote = new PouchDB('https://cllctrdb.bewegung.jetzt/cllctr/', {
+  ajax: {
+    cache: false,
+    withCredentials: true
+  },
+  skip_setup: true,
+  auth: {
+    username: 'cllctr',
+    password: prompt('DB Password?')
+  }
+})
 
-const password = prompt('DB Password?')
+window.remote = remote
 
-db.replicate.to('https://cllctr:' + password + '@cllctrdb.bewegung.jetzt/cllctr', {
+db.replicate.to(remote, {
   live: true,
   retry: true
 })
