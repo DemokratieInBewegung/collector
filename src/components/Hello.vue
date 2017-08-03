@@ -12,6 +12,9 @@
                  >
         <tab-content title="Name"
                      icon="ti-user" :before-change="validateFirstTab">
+           <h2>Hallo</h2>
+           <p>Hättest Du eventuell Interesse an weiteren Informationen zu DiB und unseren Spitzenkandidat/innen?</p>
+           <p>Natürlich werden diese vertraulich und nach strengsten Deutschen Datenrichtlinien behandelt. Die Daten werden nicht an Dritte veräußert und ausschließlich von DiB für die vereinbarte Kommunikation benutzt.</p>
            <vue-form-generator :model="model" 
                                :schema="firstTabSchema"
                                :options="formOptions"
@@ -22,6 +25,7 @@
         </tab-content>
         <tab-content title="Kontakt"
                      icon="ti-id-badge" :before-change="validateSecondTab">
+          <p>Ist es okay, wenn ich nach deiner E-Mail Addresse frage? Unsere Spitzenkandidatin (NAME) würde sich gerne bei dir für die Unterstützung bedanken!</p>
          <vue-form-generator :model="model" 
                                :schema="secondTabSchema"
                                :options="formOptions"
@@ -84,7 +88,9 @@ function makeModel () {
     whatsapp: false,
     gender: '',
     age: '< 25',
-    confidence: 0
+    confidence: 0,
+    score: 0,
+    potential_volunteer: false
   }
 }
 
@@ -145,7 +151,8 @@ export default {
           },
           {
             type: 'checkbox',
-            label: 'Bitte haltet mich über DiB auf dem Laufenden',
+            label: ' Newsletter',
+            hint: ' Möchtest Du weitere Informationen von DiB und unseren Inhalten bekommen? Dann würden wir die Adresse auch auf dem Newsletter eintragen. Andernfalls natürlich nicht.',
             model: 'newsletter',
             default: true,
             styleClasses: 'col-md-6 offset-md-3 form-inline'
@@ -154,16 +161,18 @@ export default {
             type: 'input',
             inputType: 'text',
             autocomplete: false,
-            placeholder: 'Handy Nummer',
+            placeholder: ' Handy Nummer',
             model: 'phone_number',
+            hint: ' Und/Oder Hast Du eine WhatsApp-Nummer unter der Dich die Spitzenkandidatin (NAME) unter Umständen erreichen kann?',
             required: false,
             validator: VueFormGenerator.validators.string,
             styleClasses: 'col-md-6 offset-md-3'
           },
           {
             type: 'checkbox',
-            label: 'Ist eine Whatsapp Nummer',
+            label: ' Whatsapp',
             model: 'whatsapp',
+            hint: 'abwählen, falls kein whatsapp',
             default: true,
             styleClasses: 'col-md-6 offset-md-3 form-inline'
           }
@@ -171,6 +180,16 @@ export default {
       },
       thirdTabSchema: {
         fields: [
+          {
+            type: 'radios',
+            autocomplete: false,
+            label: 'Promoter Score',
+            hint: 'Wie wahrscheinlich ist es, dass Du DEMOKRATIE In BEWEGUNG an einen anderen Freund oder Bekannten weiter empfehlen wirst? Skala 1-10, wobei 0=keinesfalls und 10=umgehend und auf jeden Fall ',
+            model: 'score',
+            required: false,
+            styleClasses: 'col-md-6 offset-md-3 h4',
+            values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+          },
           {
             type: 'radios',
             autocomplete: false,
@@ -202,7 +221,7 @@ export default {
           {
             type: 'radios',
             autocomplete: false,
-            label: 'Wird uns wählen Sicherheit:',
+            label: 'Wird-uns-wählen-Einschätzung:',
             model: 'confidence',
             required: false,
             styleClasses: 'col-md-6 offset-md-3 h3',
