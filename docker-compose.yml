@@ -1,14 +1,15 @@
 version: '2'
 services:
   db:
-    image: couchdb
+    image: couchdb:latest
     environment:
       - VIRTUAL_HOST=cllctrdb.bewegung.jetzt
       - LETSENCRYPT_HOST=cllctrdb.bewegung.jetzt
       - LETSENCRYPT_EMAIL=tech@bewegung.jetzt
     env_file: secrects.env
     volumes:
-       - ./data/db:/usr/local/var/lib/couchdb
+       - ./data/couchdb-config:/usr/local/etc/couchdb/local.d/
+       - ./data/db:/usr/local/var/lib/couchdb/
     expose:
       - 5984
     restart: unless-stopped
