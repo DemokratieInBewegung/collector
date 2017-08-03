@@ -51,31 +51,7 @@
 
 <script>
 import VueFormGenerator from 'vue-form-generator'
-// import VueFormWizard from 'vue-form-wizard'
-import PouchDB from 'pouchdb'
-import uuid from 'uuid'
-
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
-
-const db = new PouchDB('collector')
-const remote = new PouchDB('https://cllctrdb.bewegung.jetzt/cllctr/', {
-  ajax: {
-    cache: false,
-    withCredentials: true
-  },
-  skip_setup: true,
-  auth: {
-    username: 'cllctr',
-    password: prompt('DB Password?')
-  }
-})
-
-window.remote = remote
-
-db.replicate.to(remote, {
-  live: true,
-  retry: true
-})
 
 function makeModel () {
   return {
@@ -248,11 +224,7 @@ export default {
     },
     submitModel: function () {
       let model = JSON.parse(JSON.stringify(this.model))
-      model._id = uuid()
-      db.put(model).then(() => {
-        this.$data.model = makeModel()
-        this.$refs.wizard.navigateToTab(0)
-      })
+      this.$emit('submit', model)
     }
   }
 }
