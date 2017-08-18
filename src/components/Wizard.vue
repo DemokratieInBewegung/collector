@@ -55,6 +55,7 @@ import 'vue-form-wizard/dist/vue-form-wizard.min.css'
 
 function makeModel () {
   return {
+    type: 'contact',
     firstName: '',
     lastName: '',
     email: '',
@@ -66,7 +67,9 @@ function makeModel () {
     age: '< 25',
     confidence: 0,
     score: 0,
-    potential_volunteer: false
+    volunteer: false,
+    bewegerin: false,
+    member: false
   }
 }
 
@@ -193,6 +196,30 @@ export default {
                { name: '55-65', value: '55-65' },
                { name: '65-75', value: '65-75' },
                { name: '> 75', value: '> 75' }]
+          },
+          {
+            type: 'checkbox',
+            label: ' Freiwillige/r',
+            hint: 'hat interesse signalisiert, als Freiwillige/r für uns aktiv zu werden',
+            model: 'volunteer',
+            default: true,
+            styleClasses: 'col-md-6 offset-md-3 form-inline'
+          },
+          {
+            type: 'checkbox',
+            label: ' Beweger/in',
+            model: 'bewegerin',
+            hint: 'hat interesse signalisiert Beweger/in werden',
+            default: true,
+            styleClasses: 'col-md-6 offset-md-3 form-inline'
+          },
+          {
+            type: 'checkbox',
+            label: ' Mitglied',
+            model: 'member',
+            hint: 'hat interesse signalisiert Mitglied werden',
+            default: true,
+            styleClasses: 'col-md-6 offset-md-3 form-inline'
           },
           {
             type: 'radios',
