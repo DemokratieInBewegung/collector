@@ -151,11 +151,9 @@ export default {
     },
     newEntry (model) {
       model._id = uuid()
-      model.added = {
-        by: this.$data.model.person,
-        at: this.$data.model.place,
-        when: (new Date()).toISOString()
-      }
+      model.added_by = this.$data.model.person
+      model.added_place = this.$data.model.place
+      model.added_when = (new Date()).toISOString()
 
       this.$data.ready = false
       db.put(model).then(() => {

@@ -56,20 +56,20 @@ import 'vue-form-wizard/dist/vue-form-wizard.min.css'
 function makeModel () {
   return {
     type: 'contact',
-    firstName: '',
-    lastName: '',
+    firstname: '',
+    lastname: '',
     email: '',
     newsletter: true,
-    postal_code: '',
-    phone_number: '',
+    zipcode: '',
+    mobile: '',
     whatsapp: false,
     gender: '',
-    age: '< 25',
+    agegroup: '< 25',
     confidence: 0,
     score: 0,
-    volunteer: false,
-    bewegerin: false,
-    member: false
+    'pot-volunteer': false,
+    'pot-bewegerin': false,
+    'pot-member': false
   }
 }
 
@@ -89,7 +89,7 @@ export default {
           inputType: 'text',
           autocomplete: false,
           placeholder: 'Vorname',
-          model: 'firstName',
+          model: 'firstname',
           required: true,
           validator: VueFormGenerator.validators.string,
           styleClasses: 'col-md-6 offset-md-3'
@@ -99,7 +99,7 @@ export default {
           inputType: 'text',
           autocomplete: false,
           placeholder: 'Nachname',
-          model: 'lastName',
+          model: 'lastname',
           required: true,
           validator: VueFormGenerator.validators.string,
           styleClasses: 'col-md-6 offset-md-3'
@@ -109,7 +109,7 @@ export default {
           inputType: 'text',
           autocomplete: false,
           placeholder: 'Postleitzahl',
-          model: 'postal_code',
+          model: 'zipcode',
           required: true,
           validator: VueFormGenerator.validators.string,
           styleClasses: 'col-md-6 offset-md-3'
@@ -141,7 +141,7 @@ export default {
             inputType: 'text',
             autocomplete: false,
             placeholder: ' Handy Nummer',
-            model: 'phone_number',
+            model: 'mobile',
             hint: ' Und/Oder Hast Du eine WhatsApp-Nummer unter der Dich die Spitzenkandidatin (NAME) unter Umständen erreichen kann?',
             required: false,
             validator: VueFormGenerator.validators.string,
@@ -185,7 +185,7 @@ export default {
             type: 'select',
             autocomplete: false,
             label: 'Alter (circa)',
-            model: 'age',
+            model: 'agegroup',
             required: false,
             styleClasses: 'col-md-6 offset-md-3 h4',
             values: [
@@ -201,14 +201,14 @@ export default {
             type: 'checkbox',
             label: ' Freiwillige/r',
             hint: 'hat interesse signalisiert, als Freiwillige/r für uns aktiv zu werden',
-            model: 'volunteer',
+            model: 'pot-volunteer',
             default: true,
             styleClasses: 'col-md-6 offset-md-3 form-inline'
           },
           {
             type: 'checkbox',
             label: ' Beweger/in',
-            model: 'bewegerin',
+            model: 'pot-bewegerin',
             hint: 'hat interesse signalisiert Beweger/in werden',
             default: true,
             styleClasses: 'col-md-6 offset-md-3 form-inline'
@@ -216,7 +216,7 @@ export default {
           {
             type: 'checkbox',
             label: ' Mitglied',
-            model: 'member',
+            model: 'pot-member',
             hint: 'hat interesse signalisiert Mitglied werden',
             default: true,
             styleClasses: 'col-md-6 offset-md-3 form-inline'
