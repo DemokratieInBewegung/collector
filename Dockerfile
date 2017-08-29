@@ -1,5 +1,5 @@
-MAINTAINER Benjamin Kampmann <benjamin.kampmann@bewegung.jetzt>
 FROM python:alpine
+MAINTAINER Benjamin Kampmann <benjamin.kampmann@bewegung.jetzt>
 ENV PYTHONUNBUFFERED 1
 ENV FLASK_APP=services.py
 RUN mkdir /code
