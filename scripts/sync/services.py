@@ -23,9 +23,9 @@ def setup_logging():
 def fixing_plz():
 	data =  request.get_json(force=True)
 	try:
-		payload = data["mautic.lead_post_save_new"]["mautic.lead_post_save_new"]
+		payload = data["mautic.lead_post_save_new"]
 	except KeyError:
-		payload = data["mautic.lead_post_save_update"]["mautic.lead_post_save_update"]
+		payload = data["mautic.lead_post_save_update"]
 
 	for entry in payload:
 		fields = entry["contact"]['fields']
@@ -51,7 +51,7 @@ def fixing_plz():
 
 @app.route('/gcontacts-sync/{}'.format(os.environ['INCOMING_KEY']), methods=["POST"])
 def send_to_gcontacts():
-	payload = request.get_json(force=True)["mautic.lead_post_save_update"]["mautic.lead_post_save_update"]
+	payload = request.get_json(force=True)["mautic.lead_post_save_update"]
 	for entry in payload:
 		if 'butawa17-spika-synced' in entry['contact']['tags']: continue # we are already done here
 
