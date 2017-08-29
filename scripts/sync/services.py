@@ -42,7 +42,7 @@ def fixing_plz():
 		})
 
 		if 'errors' in resp:
-			app.logger.warning("Fixing PLZ failed: {errors}".format(resp))
+			app.logger.warning("Fixing PLZ failed: {errors}".format(**resp))
 			app.logger.warning("--" * 20)
 
 
