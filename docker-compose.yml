@@ -1,5 +1,15 @@
 version: '2'
 services:
+  services:
+    build: .
+    env_file: secrects.env
+    environment:
+      - VIRTUAL_HOST=mh.bewegung.jetzt
+      - LETSENCRYPT_HOST=mh.bewegung.jetzt
+      - LETSENCRYPT_EMAIL=tech@bewegung.jetzt
+    volumes:
+      - ./data/syncer:/code/data
+    restart: unless-stopped
   db:
     image: couchdb:latest
     environment:

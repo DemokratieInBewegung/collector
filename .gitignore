@@ -16,3 +16,9 @@ selenium-debug.log
 *.sln
 data/db
 secrects.env
+__pycache__
+scripts/sync/bin
+scripts/sync/data
+scripts/sync/include
+scripts/sync/lib
+scripts/sync/pip-selfcheck.json
