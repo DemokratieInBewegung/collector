@@ -4,8 +4,8 @@ services:
     build: .
     env_file: secrects.env
     environment:
-      - VIRTUAL_HOST=mh.bewegung.jetzt
-      - LETSENCRYPT_HOST=mh.bewegung.jetzt
+      - VIRTUAL_HOST=cllctr-helper.bewegung.jetzt
+      - LETSENCRYPT_HOST=cllctr-helper.bewegung.jetzt
       - LETSENCRYPT_EMAIL=tech@bewegung.jetzt
     volumes:
       - ./data/syncer:/code/data
