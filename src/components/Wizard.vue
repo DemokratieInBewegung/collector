@@ -100,7 +100,7 @@ export default {
           autocomplete: false,
           placeholder: 'Nachname',
           model: 'lastname',
-          required: true,
+          required: false,
           validator: VueFormGenerator.validators.string,
           styleClasses: 'col-md-6 offset-md-3'
         },
