@@ -30,16 +30,22 @@ def fixing_plz():
 	for entry in payload:
 		fields = entry["contact"]['fields']
 		state = fields['core'].get("state", {}).get("value", None)
-		plz = fields['core'].get("zipcode", {}).get("value", None)
+		plz = fields['core'].get("zipcode", {}).get("value", None).strip()
+		if len(plz) == 4:
+			plz = "0{}".format(plz)
 		butawa17_spika = (fields['personal'] or {}).get("butawa17_spika", {}).get("value", None)
 
 		if butawa17_spika: continue  # we are already done here
 		if not plz: continue         # nothing we can do here
 
-		resp = contacts.edit(entry['lead']['id'], {
-			'state': PLZs.get(plz, ''),
+		to_update = {
 			'butawa17_spika': SPIKA.get(plz, '')
-		})
+		}
+
+		if not state:
+			to_update['state'] = PLZs.get(plz, '')
+
+		resp = contacts.edit(entry['contact']['id'], to_update)
 
 		if 'errors' in resp:
 			app.logger.warning("Fixing PLZ failed: {errors}".format(**resp))
