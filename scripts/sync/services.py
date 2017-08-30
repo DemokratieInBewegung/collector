@@ -59,37 +59,42 @@ def fixing_plz():
 def send_to_gcontacts():
 	payload = request.get_json(force=True)["mautic.lead_post_save_update"]
 	for entry in payload:
-		if 'butawa17-spika-synced' in entry['contact']['tags']: continue # we are already done here
-
 		fields = entry["contact"]['fields']
+		personal = (fields["personal"] or {})
+		core = (fields["core"] or {})
+
+		if personal.get("butawa17_spika_synced", {}).get("value", None) == 'synced': continue
+		
 		butawa17_spika = (fields["personal"] or {}).get("butawa17_spika", {}).get("value", None)
 		whatsapp = (fields["social"] or {}).get("whatsapp", {}).get("value", None)
 
 		if not butawa17_spika: continue  # nothing we can do here
 		if not whatsapp: continue  # nothing we can do here
 
+		error = False
+
 		try:
 			res = push_to_gcontact(butawa17_spika, {
 				"phoneNumbers": [{"value": whatsapp}],
 				"names": [{
-					"familyName": fields.get("lastname", {}).get("value", ""),
-					"givenName": fields.get("firstname", {}).get("value", "")
+					"familyName": core.get("lastname", {}).get("value", ""),
+					"givenName": core.get("firstname", {}).get("value", "")
 					}]
 				})
 		except Exception as e:
 			tags.append('butawa17-spika-sync-failed')
-			app.logger.warning("Sync Failed: {error}".format(**res))
+			app.logger.warning("Sync Failed:")
 			app.logger.error(e)
+			error = True
 		else:
-			tags = entry['leads']['tags'] + ['butawa17-spika-synced']
 			if "error" in res:
-				tags.append('butawa17-spika-sync-failed')
+				efror = True
 				app.logger.warning("Sync Failed: {error}".format(**res))
 				app.logger.warning(entry)
 				app.logger.warning("--" * 20)
 
 		contacts.edit(entry['lead']['id'], {
-			"tags": ",".join(tags)
+			"butawa17_spika_synced": "failed" if error else "synced"
 		})
 
 	return "ok"

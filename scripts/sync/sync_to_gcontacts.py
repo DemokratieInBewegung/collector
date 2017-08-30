@@ -27,7 +27,7 @@ def push_to_gcontact(entry, payload):
 	http = credentials.authorize(http)
 
 	(resp, content) = http.request("https://people.googleapis.com/v1/people:createContact", "POST",
-		body=json.dumps(paylod))
+		body=json.dumps(payload))
 
 	if resp['status'] != '200':
 		return {
@@ -36,7 +36,7 @@ def push_to_gcontact(entry, payload):
 		}
 
 	else:
-		{
+		return {
 			"synced_to": entry,
 			"gcontacts_id": json.loads(content.decode('utf-8'))['resourceName']
 		}
