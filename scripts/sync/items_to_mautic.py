@@ -3,9 +3,9 @@ import json
 import couchdb
 import requests
 import csv
-# import logging
-# logging.basicConfig(level=logging.DEBUG)
-from .cfg import PLZs, SPIKA
+import logging
+logging.basicConfig(level=logging.DEBUG)
+from cfg import PLZs, SPIKA
 
 from mautic_client import contacts
 
@@ -13,9 +13,9 @@ from mautic_client import contacts
 couch = couchdb.Server(os.environ["COUCHDB_URL"])['cllctr']
 
 
-def import_to_mautic():
+def import_to_mautic(limit=10):
 
-	for doc in couch.view('to_import_to_mautic/to_import_to_mautic', options={"limit": 10}):
+	for doc in couch.view('to_import_to_mautic/to_import_to_mautic', options={"limit": limit}):
 		doc = couch[doc.id]
 
 		if 'synced_to_mautic' in doc:
@@ -60,3 +60,7 @@ def import_to_mautic():
 			}
 			print("Added #{}: {firstname} {lastname} <{email}>, {mobile}".format(resp["contact"]["id"], **contact))
 		couch.save(doc)
+
+
+if __name__ == '__main__':
+	import_to_mautic(limit=1)
