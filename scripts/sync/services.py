@@ -68,20 +68,25 @@ def send_to_gcontacts():
 		if not butawa17_spika: continue  # nothing we can do here
 		if not whatsapp: continue  # nothing we can do here
 
-		res = push_to_gcontact(butawa17_spika, {
-			"phoneNumbers": [{"value": whatsapp}],
-			"names": [{
-				"familyName": fields.get("lastname", {}).get("value", ""),
-				"givenName": fields.get("firstname", {}).get("value", "")
-				}]
-			})
-
-		tags = entry['leads']['tags'] + ['butawa17-spika-synced']
-		if "error" in res:
+		try:
+			res = push_to_gcontact(butawa17_spika, {
+				"phoneNumbers": [{"value": whatsapp}],
+				"names": [{
+					"familyName": fields.get("lastname", {}).get("value", ""),
+					"givenName": fields.get("firstname", {}).get("value", "")
+					}]
+				})
+		except Exception as e:
 			tags.append('butawa17-spika-sync-failed')
 			app.logger.warning("Sync Failed: {error}".format(**res))
-			app.logger.warning(entry)
-			app.logger.warning("--" * 20)
+			app.logger.error(e)
+		else:
+			tags = entry['leads']['tags'] + ['butawa17-spika-synced']
+			if "error" in res:
+				tags.append('butawa17-spika-sync-failed')
+				app.logger.warning("Sync Failed: {error}".format(**res))
+				app.logger.warning(entry)
+				app.logger.warning("--" * 20)
 
 		contacts.edit(entry['lead']['id'], {
 			"tags": ",".join(tags)
