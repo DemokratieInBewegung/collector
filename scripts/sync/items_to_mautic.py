@@ -34,8 +34,8 @@ def import_to_mautic(limit=10):
 			contact["agegroup"] = contact.pop("agegroup", {}).get("value", None)
 		except AttributeError:
 			pass
-		contact["whatsapp"] = contact.get("mobile") if contact.pop("whatsapp", False) else ''
-		contact['points'] = 0
+		contact["whatsapp"] = contact.get("mobile", '')
+		contact['points'] = 5
 
 		contact["id"] = contact.pop("_id")
 		zipcode = str(contact.get('zipcode', PLZs.get('plz', ''))).strip()
