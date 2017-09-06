@@ -91,7 +91,6 @@ def send_to_gcontacts():
 						}]
 					})
 			except Exception as e:
-				tags.append('butawa17-spika-sync-failed')
 				app.logger.warning("Sync Failed:")
 				app.logger.error(e)
 				error = True
