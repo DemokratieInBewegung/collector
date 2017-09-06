@@ -30,7 +30,10 @@ def import_to_mautic(limit=10):
 		contact.pop("age", False)
 		contact.pop("type", False)
 
-		contact["agegroup"] = contact.pop("age", contact.pop("agegroup", {})).get("value", None)
+		try:
+			contact["agegroup"] = contact.pop("agegroup", {}).get("value", None)
+		except AttributeError:
+			pass
 		contact["whatsapp"] = contact.get("mobile") if contact.pop("whatsapp", False) else ''
 		contact['points'] = 0
 
